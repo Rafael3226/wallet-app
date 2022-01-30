@@ -5,6 +5,9 @@ import Default404 from './pages/Default404';
 import Home from './pages/Home';
 import LoadMoney from './pages/LoadMoney';
 import Shop from './pages/Shop';
+import SingInPage from './pages/SingInPage';
+import LogInPage from './pages/LogInPage';
+import RequireAuth from './containers/RequireAuth';
 
 function App() {
   return (
@@ -12,9 +15,32 @@ function App() {
       <TopBar />
       <Routes>
         <Route path="/">
-          <Route index element={<Home />} />
-          <Route path="shop" element={<Shop />} />
-          <Route path="load" element={<LoadMoney />} />
+          <Route path="singin" element={<SingInPage />} />
+          <Route path="login" element={<LogInPage />} />
+          <Route
+            index
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="shop"
+            element={
+              <RequireAuth>
+                <Shop />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="load"
+            element={
+              <RequireAuth>
+                <LoadMoney />
+              </RequireAuth>
+            }
+          />
           <Route path="*" element={<Default404 />} />
         </Route>
       </Routes>

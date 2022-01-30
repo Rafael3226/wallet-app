@@ -9,7 +9,7 @@ function ShopItem({ label, price, onClick, img }) {
         </div>
         <div className="product__item__text">
           <h6>{label}</h6>
-          <button type="button" className="add-cart" onClick={onClick}>
+          <button type="button" onClick={onClick}>
             + Buy
           </button>
           <h5>{price + ' $'}</h5>

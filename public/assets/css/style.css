@@ -978,7 +978,7 @@ ol {
 }
 
 .product__item__pic {
-  height: 200px;
+  height: 220px;
   position: relative;
   background-position: center center;
 }
@@ -1055,14 +1055,13 @@ ol {
 }
 
 .product__item__text {
-  padding-top: 25px;
+  margin-top: 50px;
   position: relative;
 }
 
 .product__item__text button {
   width: 100%;
   border: none;
-  background-color: #fff;
   font-size: 15px;
   color: #e53637;
   font-weight: 700;
