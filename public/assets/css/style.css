@@ -3900,3 +3900,12 @@ ol {
     height: 250px;
   }
 }
+
+.home__background {
+  position: fixed;
+  background-image: url('../img/container.png');
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 100%;
+  width: 100%;
+}
