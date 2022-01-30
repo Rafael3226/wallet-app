@@ -963,7 +963,7 @@ ol {
   opacity: 1;
 }
 
-.product__item:hover .product__item__text a {
+.product__item:hover .product__item__text button {
   top: 22px;
   opacity: 1;
   visibility: visible;
@@ -978,7 +978,7 @@ ol {
 }
 
 .product__item__pic {
-  height: 260px;
+  height: 200px;
   position: relative;
   background-position: center center;
 }
@@ -1059,7 +1059,10 @@ ol {
   position: relative;
 }
 
-.product__item__text a {
+.product__item__text button {
+  width: 100%;
+  border: none;
+  background-color: #fff;
   font-size: 15px;
   color: #e53637;
   font-weight: 700;
