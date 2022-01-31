@@ -10,8 +10,8 @@ function Input({
 }) {
   return (
     <div className="checkout__input">
+      {label && <p>{label}</p>}
       <div className="row">
-        <p>{label}</p>
         {showPass && (
           <div style={{ marginLeft: '350px' }}>
             <div>{showPass}</div>
@@ -20,6 +20,8 @@ function Input({
         <input
           type={type}
           style={{
+            marginLeft: '10px',
+            marginRight: '10px',
             borderRadius: '10px',
             background: '#f3f2ee',
             color: '#000',

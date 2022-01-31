@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
+import Input from '../components/forms/Input';
 import userController from '../controllers/userController';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { userAtom } from '../recoil/userAtom';
@@ -32,24 +33,15 @@ export default function LoadMoney() {
       <div className="col-lg-6 col-md-8" style={{ margin: 'auto' }}>
         <div className="checkout__order" style={{ borderRadius: '10px' }}>
           <h4 className="order__title" style={{ textAlign: 'center' }}>
-            Load Balance
+            Load
           </h4>
           <ul className="checkout__total__products">
-            <div className="checkout__input">
-              <div className="row">
-                <input
-                  type="number"
-                  style={{
-                    borderRadius: '10px',
-                    background: '#f3f2ee',
-                    color: '#000',
-                  }}
-                  placeholder="Amount"
-                  value={state.value}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
+            <Input
+              label="Value"
+              type="number"
+              value={state.value}
+              onChange={handleChange}
+            />
             {state.errorMessage && <h6>{state.errorMessage}</h6>}
           </ul>
           <ul className="checkout__total__all">
