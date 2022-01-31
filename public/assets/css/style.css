@@ -1071,8 +1071,9 @@ ol {
 .product__item__text button {
   width: 100%;
   border: none;
+  border-radius: 10px;
   font-size: 15px;
-  color: #e53637;
+  color: #000;
   font-weight: 700;
   position: absolute;
   left: 0;

@@ -15,19 +15,18 @@ export default function SendMoney() {
   function handleValue(event) {
     setState((s) => ({ ...s, value: event.target.value }));
   }
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     try {
-      alert('todo');
-      //   const userControllerClass = new userController();
-      //   const balance = Number(state.value) + Number(recoilUser.balance);
-      //   const id = recoilUser.id;
-      //   if (!id) throw new Error('No ID configured');
-      //   userControllerClass.LoadMoney(recoilUser.id, { balance });
-      //   const newUser = { ...recoilUser, balance };
-      //   useLocalStorage.set('user', newUser);
-      //   setRecoilUser(newUser);
-      //   setState(initialState);
+      const userControllerClass = new userController();
+      const newUser = await userControllerClass.SendMoney(
+        recoilUser.id,
+        state.receiverId,
+        state.value
+      );
+      useLocalStorage.set('user', newUser);
+      setRecoilUser(newUser);
+      setState(initialState);
     } catch (e) {
       setState((s) => ({ ...s, errorMessage: e.message }));
     }

@@ -3,9 +3,8 @@ import {
   collection,
   query,
   where,
-  //   deleteDoc,
   doc,
-  //   getDoc,
+  getDoc,
   getDocs,
   updateDoc,
 } from 'firebase/firestore';
@@ -35,10 +34,31 @@ export default class userFirestore {
     return userData;
   }
   async LoadMoney(id, changes) {
-    const res = await updateDoc(
-      doc(firestore, this.collectionName, id),
-      changes
+    await updateDoc(doc(firestore, this.collectionName, id), changes);
+  }
+  async SendMoney(senderId, reciverId, amount) {
+    // substract sender balance
+    const docSender = await getDoc(
+      doc(firestore, this.collectionName, senderId)
     );
-    return res;
+    const senderNewBalance = Number(docSender.data().balance) - Number(amount);
+    await updateDoc(doc(firestore, this.collectionName, senderId), {
+      balance: senderNewBalance,
+    });
+    // Add Reciver Balance
+    const docReciver = await getDoc(
+      doc(firestore, this.collectionName, reciverId)
+    );
+    const reciverNewBalance =
+      Number(docReciver.data().balance) + Number(amount);
+    await updateDoc(doc(firestore, this.collectionName, reciverId), {
+      balance: reciverNewBalance,
+    });
+
+    return {
+      ...docSender.data(),
+      balance: senderNewBalance,
+      id: senderId,
+    };
   }
 }

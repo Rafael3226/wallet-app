@@ -10,13 +10,14 @@ function Input({
 }) {
   return (
     <div className="checkout__input">
-      {label && <p>{label}</p>}
+      {label && (
+        <p>
+          {label}
+          {showPass && <span>{showPass}</span>}
+        </p>
+      )}
+
       <div className="row">
-        {showPass && (
-          <div style={{ marginLeft: '350px' }}>
-            <div>{showPass}</div>
-          </div>
-        )}
         <input
           type={type}
           style={{

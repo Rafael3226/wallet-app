@@ -74,7 +74,7 @@ function LogInPage() {
                   type="button"
                   className="site-btn-secondary"
                   onClick={toggleShowPassword}
-                  style={{ margin: '5px', marginBottom: '15px' }}
+                  style={{ margin: '5px' }}
                 >
                   {state.showPassword ? 'hide' : 'show'}
                 </button>
