@@ -15,6 +15,9 @@ function MenuLinks() {
           <li>
             <NavLink to="/load">Load</NavLink>
           </li>
+          <li>
+            <NavLink to="/send">Send</NavLink>
+          </li>
         </ul>
       </nav>
     </div>

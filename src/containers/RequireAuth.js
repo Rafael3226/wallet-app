@@ -5,19 +5,19 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import { userAtom } from '../recoil/userAtom';
 
 function RequireAuth({ children }) {
-  const [user, setUser] = useRecoilState(userAtom);
+  const [recoilUser, setRecoilUser] = useRecoilState(userAtom);
   useEffect(() => {
-    if (user.id === '') {
+    if (recoilUser.id === '') {
       try {
         const auth = useLocalStorage.get('user');
         if (auth) {
-          setUser(auth);
+          setRecoilUser(auth);
         }
       } catch {}
     }
-  }, [user.id, setUser]);
+  }, [recoilUser.id]);
 
-  if (user.id === '') {
+  if (recoilUser.id === '') {
     return <Navigate to="/login" />;
   }
 

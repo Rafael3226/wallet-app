@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import Input from '../components/forms/Input';
 import userController from '../controllers/userController';
 import useLocalStorage from '../hooks/useLocalStorage';

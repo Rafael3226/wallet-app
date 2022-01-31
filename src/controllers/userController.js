@@ -4,10 +4,10 @@ import {
   query,
   where,
   //   deleteDoc,
-  //   doc,
+  doc,
   //   getDoc,
   getDocs,
-  //   updateDoc,
+  updateDoc,
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
@@ -21,7 +21,8 @@ export default class userFirestore {
     const users = await getDocs(q);
     if (users.size !== 0) throw new Error('The email already exists');
     const firestoreUser = await addDoc(this.collection, user);
-    return firestoreUser;
+    user.id = firestoreUser.id;
+    return user;
   }
   async LogIn(email, password) {
     const q = query(this.collection, where('email', '==', email));
@@ -30,6 +31,14 @@ export default class userFirestore {
     const userData = users.docs[0].data();
     if (userData.password !== password)
       throw new Error('The password does not match');
+    userData.id = users.docs[0].id;
     return userData;
+  }
+  async LoadMoney(id, changes) {
+    const res = await updateDoc(
+      doc(firestore, this.collectionName, id),
+      changes
+    );
+    return res;
   }
 }

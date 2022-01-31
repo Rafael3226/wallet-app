@@ -1,62 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import userController from '../controllers/userController';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { userAtom } from '../recoil/userAtom';
 
-class LoadMoney extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { amount: 0 };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+export default function LoadMoney() {
+  const initialState = { value: 0, errorMessage: '' };
+  const [state, setState] = useState(initialState);
+  const [recoilUser, setRecoilUser] = useRecoilState(userAtom);
+  function handleChange(event) {
+    setState((s) => ({ ...s, value: event.target.value }));
   }
-  handleChange(event) {
-    this.setState({ amount: event.target.value });
-  }
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.amount);
+  function handleSubmit(event) {
     event.preventDefault();
+    try {
+      const userControllerClass = new userController();
+      const balance = Number(state.value) + Number(recoilUser.balance);
+      const id = recoilUser.id;
+      if (!id) throw new Error('No ID configured');
+      userControllerClass.LoadMoney(recoilUser.id, { balance });
+      const newUser = { ...recoilUser, balance };
+      useLocalStorage.set('user', newUser);
+      setRecoilUser(newUser);
+      setState(initialState);
+    } catch (e) {
+      setState((s) => ({ ...s, errorMessage: e.message }));
+    }
   }
-  render() {
-    return (
-      <div className="container">
-        <div className="col-lg-6 col-md-8" style={{ margin: 'auto' }}>
-          <div className="checkout__order" style={{ borderRadius: '10px' }}>
-            <h4 className="order__title" style={{ textAlign: 'center' }}>
-              Your order
-            </h4>
-            <ul className="checkout__total__products">
-              <div className="checkout__input">
-                <div className="row">
-                  <input
-                    type="number"
-                    style={{
-                      borderRadius: '10px',
-                      background: '#f3f2ee',
-                      color: '#000',
-                    }}
-                    placeholder="Amount"
-                    value={this.state.amount}
-                    onChange={this.handleChange}
-                  />
-                </div>
+  return (
+    <div className="container">
+      <div className="col-lg-6 col-md-8" style={{ margin: 'auto' }}>
+        <div className="checkout__order" style={{ borderRadius: '10px' }}>
+          <h4 className="order__title" style={{ textAlign: 'center' }}>
+            Load Balance
+          </h4>
+          <ul className="checkout__total__products">
+            <div className="checkout__input">
+              <div className="row">
+                <input
+                  type="number"
+                  style={{
+                    borderRadius: '10px',
+                    background: '#f3f2ee',
+                    color: '#000',
+                  }}
+                  placeholder="Amount"
+                  value={state.value}
+                  onChange={handleChange}
+                />
               </div>
-            </ul>
-            <ul className="checkout__total__all">
-              <li>
-                Total <span>{`${this.state.amount} $`}</span>
-              </li>
-            </ul>
-            <button
-              type="submit"
-              className="site-btn"
-              onClick={this.handleSubmit}
-            >
-              PLACE ORDER
-            </button>
-          </div>
+            </div>
+            {state.errorMessage && <h6>{state.errorMessage}</h6>}
+          </ul>
+          <ul className="checkout__total__all">
+            <li>
+              Total <span>{`${state.value} $`}</span>
+            </li>
+          </ul>
+          <button type="submit" className="site-btn" onClick={handleSubmit}>
+            PLACE ORDER
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default LoadMoney;
