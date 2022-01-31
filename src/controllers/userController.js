@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
-export default class userFirestore {
+export default class userController {
   constructor() {
     this.collectionName = 'user';
     this.collection = collection(firestore, this.collectionName);
@@ -35,8 +35,12 @@ export default class userFirestore {
   }
   async LoadMoney(id, changes) {
     await updateDoc(doc(firestore, this.collectionName, id), changes);
+    const newUser = await getDoc(doc(firestore, this.collectionName, id));
+    const userData = { ...newUser.data(), id };
+    return userData;
   }
   async SendMoney(senderId, reciverId, amount) {
+    reciverId = reciverId.trim();
     // substract sender balance
     const docSender = await getDoc(
       doc(firestore, this.collectionName, senderId)

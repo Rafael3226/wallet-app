@@ -18,6 +18,8 @@ export default function SendMoney() {
   async function handleSubmit(event) {
     event.preventDefault();
     try {
+      setState((s) => ({ ...s, errorMessage: '' }));
+      if (state.value === 0) throw new Error('The value can not be 0');
       const userControllerClass = new userController();
       const newUser = await userControllerClass.SendMoney(
         recoilUser.id,

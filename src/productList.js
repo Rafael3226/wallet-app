@@ -8,12 +8,12 @@ import product7 from './img/product/product-7.jpg';
 import product8 from './img/product/product-8.jpg';
 
 export const productList = [
-  { label: 'Burger', price: '17', img: product1 },
-  { label: 'Chees Burger', price: '19', img: product2 },
-  { label: 'Sunday', price: '8', img: product3 },
-  { label: 'Fries', price: '8', img: product4 },
-  { label: 'Burger', price: '17', img: product5 },
-  { label: 'Chees Burger', price: '19', img: product6 },
-  { label: 'Sunday', price: '8', img: product7 },
-  { label: 'Fries', price: '8', img: product8 },
+  { label: 'Shoes A', price: '200', img: product1 },
+  { label: 'Shirt', price: '150', img: product2 },
+  { label: 'Shoes B', price: '250', img: product3 },
+  { label: 'Jacket', price: '350', img: product4 },
+  { label: 'T-Shirt', price: '80', img: product5 },
+  { label: 'Scarf', price: '120', img: product6 },
+  { label: 'Backpack', price: '170', img: product7 },
+  { label: 'Polo Shirt', price: '120', img: product8 },
 ];
