@@ -38,13 +38,12 @@ function SingInPage() {
   }
   async function handleSubmit(event) {
     event.preventDefault();
-    let newUser = {
-      name: state.name,
-      email: state.email,
-      password: state.password,
-      balance: 0,
-    };
+    setState((s) => ({ ...s, errorMessage: '' }));
+    const { email, name, password } = state;
+    let newUser = { email, name, password, balance: 0 };
     try {
+      if (email === '' || name === '' || password === '')
+        throw new Error('Please fill in all the fields');
       const userControllerClass = new userController();
       newUser = await userControllerClass.SingIn(newUser);
       useLocalStorage.set('user', newUser);

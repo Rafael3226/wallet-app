@@ -19,7 +19,7 @@ export default class userFirestore {
   async SingIn(user) {
     const q = query(this.collection, where('email', '==', user.email));
     const users = await getDocs(q);
-    if (users.length !== 0) throw new Error('The email already exists');
+    if (users.size !== 0) throw new Error('The email already exists');
     const firestoreUser = await addDoc(this.collection, user);
     return firestoreUser;
   }
