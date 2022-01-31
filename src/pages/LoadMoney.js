@@ -36,6 +36,12 @@ export default function LoadMoney() {
           </h4>
           <ul className="checkout__total__products">
             <Input
+              label="Account id"
+              type="text"
+              value={recoilUser.id}
+              disabled={true}
+            />
+            <Input
               label="Value"
               type="number"
               value={state.value}

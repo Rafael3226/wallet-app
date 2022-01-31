@@ -41,6 +41,8 @@ export default class userController {
   }
   async SendMoney(senderId, reciverId, amount) {
     reciverId = reciverId.trim();
+    if (senderId === reciverId)
+      throw new Error('The sender and reciver are the same.');
     // sender Data
     const docSender = await getDoc(
       doc(firestore, this.collectionName, senderId)

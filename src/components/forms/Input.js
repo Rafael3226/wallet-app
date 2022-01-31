@@ -7,6 +7,7 @@ function Input({
   placeholder = '',
   type = 'text',
   showPass,
+  disabled = false,
 }) {
   return (
     <div className="checkout__input">
@@ -30,6 +31,7 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          disabled={disabled}
         />
       </div>
     </div>

@@ -42,7 +42,7 @@ export default function SendMoney() {
           </h4>
           <ul className="checkout__total__products">
             <Input
-              label="receiver ID"
+              label="Receiver id"
               type="text"
               value={state.receiverId}
               onChange={handleReceiverId}
