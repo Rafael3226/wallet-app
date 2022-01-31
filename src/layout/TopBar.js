@@ -22,6 +22,7 @@ function TopBar() {
         navigate('/login', { replace: true });
       }
     } else navigate('/', { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recoilUser.id]);
   return (
     <header className="header">
