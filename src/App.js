@@ -8,43 +8,48 @@ import Shop from './pages/Shop';
 import SingInPage from './pages/SingInPage';
 import LogInPage from './pages/LogInPage';
 import RequireAuth from './containers/RequireAuth';
+import { RecoilRoot } from 'recoil';
+import firebase from './firebase';
 
 function App() {
+  const config = firebase;
   return (
-    <BrowserRouter>
-      <TopBar />
-      <Routes>
-        <Route path="/">
-          <Route path="singin" element={<SingInPage />} />
-          <Route path="login" element={<LogInPage />} />
-          <Route
-            index
-            element={
-              <RequireAuth>
-                <Home />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="shop"
-            element={
-              <RequireAuth>
-                <Shop />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="load"
-            element={
-              <RequireAuth>
-                <LoadMoney />
-              </RequireAuth>
-            }
-          />
-          <Route path="*" element={<Default404 />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <RecoilRoot>
+      <BrowserRouter>
+        <TopBar />
+        <Routes>
+          <Route path="/">
+            <Route path="singin" element={<SingInPage />} />
+            <Route path="login" element={<LogInPage />} />
+            <Route
+              index
+              element={
+                <RequireAuth>
+                  <Home />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="shop"
+              element={
+                <RequireAuth>
+                  <Shop />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="load"
+              element={
+                <RequireAuth>
+                  <LoadMoney />
+                </RequireAuth>
+              }
+            />
+            <Route path="*" element={<Default404 />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </RecoilRoot>
   );
 }
 

@@ -1,90 +1,106 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import Input from '../components/forms/Input';
+import userController from '../controllers/userController';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { userAtom } from '../recoil/userAtom';
 
-class SingInPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { amount: 0 };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+function SingInPage() {
+  const defaultState = {
+    name: '',
+    email: '',
+    password: '',
+    showPassword: false,
+  };
+  const [state, setState] = useState(defaultState);
+  const navigate = useNavigate();
+  const [recoilUser, setRecoilUser] = useRecoilState(userAtom);
+  useEffect(() => {
+    if (recoilUser.id === '') {
+      try {
+        const auth = useLocalStorage.get('user');
+        if (auth) {
+          setRecoilUser(auth);
+        }
+      } catch {}
+    } else navigate('/', { replace: true });
+  }, [recoilUser, navigate, setRecoilUser]);
+  function handleName(event) {
+    setState((s) => ({ ...s, name: event.target.value }));
   }
-  handleChange(event) {
-    this.setState({ amount: event.target.value });
+  function handleEmail(event) {
+    setState((s) => ({ ...s, email: event.target.value }));
   }
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.amount);
+  function handlePassword(event) {
+    setState((s) => ({ ...s, password: event.target.value }));
+  }
+  async function handleSubmit(event) {
     event.preventDefault();
+    let newUser = {
+      name: state.name,
+      email: state.email,
+      password: state.password,
+      balance: 0,
+    };
+    const userControllerClass = new userController();
+    newUser = await userControllerClass.Save(newUser);
+    useLocalStorage.set('user', newUser);
+    setRecoilUser(newUser);
+    setState(defaultState);
+    navigate('/', { replace: true });
   }
-  render() {
-    return (
-      <div className="container">
-        <div className="col-lg-6 col-md-8" style={{ margin: 'auto' }}>
-          <div className="checkout__order" style={{ borderRadius: '10px' }}>
-            <h4 className="order__title" style={{ textAlign: 'center' }}>
-              Log In
-            </h4>
-            <ul className="checkout__total__products">
-              <div className="checkout__input">
-                <div className="row">
-                  <p>Name</p>
-                  <input
-                    type="text"
-                    style={{
-                      borderRadius: '10px',
-                      background: '#f3f2ee',
-                      color: '#000',
-                    }}
-                    placeholder="Name"
-                    value={this.state.amount}
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-              <div className="checkout__input">
-                <div className="row">
-                  <p>Email</p>
-                  <input
-                    type="email"
-                    style={{
-                      borderRadius: '10px',
-                      background: '#f3f2ee',
-                      color: '#000',
-                    }}
-                    placeholder="Amount"
-                    value={this.state.amount}
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-              <div className="checkout__input">
-                <div className="row">
-                  <p>Password</p>
-                  <input
-                    type="password"
-                    style={{
-                      borderRadius: '10px',
-                      background: '#f3f2ee',
-                      color: '#000',
-                    }}
-                    placeholder="Amount"
-                    value={this.state.amount}
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-            </ul>
-            <button
-              type="submit"
-              className="site-btn"
-              onClick={this.handleSubmit}
-            >
-              Sing In
-            </button>
-          </div>
+  function toggleShowPassword() {
+    setState((s) => ({ ...s, showPassword: !s.showPassword }));
+  }
+  return (
+    <div className="container">
+      <div className="col-lg-6 col-md-8" style={{ margin: 'auto' }}>
+        <div className="checkout__order" style={{ borderRadius: '10px' }}>
+          <h4 className="order__title" style={{ textAlign: 'center' }}>
+            Log In
+          </h4>
+          <ul className="checkout__total__products">
+            <Input
+              label="Name"
+              value={state.name}
+              onChange={handleName}
+              placeholder="Name"
+              type="text"
+            />
+            <Input
+              label="Email"
+              value={state.email}
+              onChange={handleEmail}
+              placeholder="Email"
+              type="email"
+            />
+            <Input
+              label="Password"
+              value={state.password}
+              onChange={handlePassword}
+              placeholder="Password"
+              type={state.showPassword ? 'text' : 'password'}
+              showPass={
+                <button
+                  type="button"
+                  className="site-btn-secondary"
+                  onClick={toggleShowPassword}
+                  style={{ margin: '5px', marginBottom: '15px' }}
+                >
+                  {state.showPassword ? 'hide' : 'show'}
+                </button>
+              }
+            />
+          </ul>
+
+          <button type="submit" className="site-btn" onClick={handleSubmit}>
+            Log In
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default SingInPage;

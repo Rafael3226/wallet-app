@@ -179,6 +179,15 @@ ol {
   padding: 14px 30px;
   border-radius: 10px;
 }
+.site-btn-secondary {
+  font-size: 14px;
+  color: #f6dd69;
+  background: #fff;
+  border-color: #f6dd69;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 10px;
+}
 
 /* Preloder */
 

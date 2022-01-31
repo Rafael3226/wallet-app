@@ -1,81 +1,78 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-class LogInPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { amount: 0 };
+function LogInPage() {
+  const defaultState = { email: '', password: '' };
+  const [state, setState] = useState(defaultState);
+  const navigate = useNavigate();
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  function handleEmail(event) {
+    setState({ email: event.target.value });
   }
-  handleChange(event) {
-    this.setState({ amount: event.target.value });
+  function handlePassword(event) {
+    setState({ password: event.target.value });
   }
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.amount);
+  function handleSubmit(event) {
+    alert('Email: ' + state.email);
     event.preventDefault();
+
+    setState(defaultState);
   }
-  render() {
-    return (
-      <div className="container">
-        <div className="col-lg-6 col-md-8" style={{ margin: 'auto' }}>
-          <div className="checkout__order" style={{ borderRadius: '10px' }}>
-            <h4 className="order__title" style={{ textAlign: 'center' }}>
-              Log In
-            </h4>
-            <ul className="checkout__total__products">
-              <div className="checkout__input">
-                <div className="row">
-                  <p>Name</p>
-                  <input
-                    type="text"
-                    style={{
-                      borderRadius: '10px',
-                      background: '#f3f2ee',
-                      color: '#000',
-                    }}
-                    placeholder="Name"
-                    value={this.state.amount}
-                    onChange={this.handleChange}
-                  />
-                </div>
+  function handleSingIn() {
+    setState(defaultState);
+    navigate('/singin', { replace: true });
+  }
+  return (
+    <div className="container">
+      <div className="col-lg-6 col-md-8" style={{ margin: 'auto' }}>
+        <div className="checkout__order" style={{ borderRadius: '10px' }}>
+          <h4 className="order__title" style={{ textAlign: 'center' }}>
+            Log In
+          </h4>
+          <ul className="checkout__total__products">
+            <div className="checkout__input">
+              <div className="row">
+                <p>Email</p>
+                <input
+                  type="text"
+                  style={{
+                    borderRadius: '10px',
+                    background: '#f3f2ee',
+                    color: '#000',
+                  }}
+                  placeholder="Email"
+                  value={state.email}
+                  onChange={handleEmail}
+                />
               </div>
-              <div className="checkout__input">
-                <div className="row">
-                  <p>Email</p>
-                  <input
-                    type="email"
-                    style={{
-                      borderRadius: '10px',
-                      background: '#f3f2ee',
-                      color: '#000',
-                    }}
-                    placeholder="Amount"
-                    value={this.state.amount}
-                    onChange={this.handleChange}
-                  />
-                </div>
+            </div>
+            <div className="checkout__input">
+              <div className="row">
+                <p>Password</p>
+                <input
+                  type="email"
+                  style={{
+                    borderRadius: '10px',
+                    background: '#f3f2ee',
+                    color: '#000',
+                  }}
+                  placeholder="Amount"
+                  value={state.password}
+                  onChange={handlePassword}
+                />
               </div>
-            </ul>
-            <button
-              type="submit"
-              className="site-btn"
-              onClick={this.handleSubmit}
-            >
-              Log In
-            </button>
-            <button
-              type="submit"
-              className="site-btn"
-              onClick={this.handleSubmit}
-            >
-              Sing In
-            </button>
-          </div>
+            </div>
+          </ul>
+          <button type="submit" className="site-btn" onClick={handleSubmit}>
+            Log In
+          </button>
+          <button type="submit" className="site-btn" onClick={handleSingIn}>
+            Sing In
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default LogInPage;
