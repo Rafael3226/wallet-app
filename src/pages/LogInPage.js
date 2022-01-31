@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import Input from '../components/forms/Input';
+import userController from '../controllers/userController';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { userAtom } from '../recoil/userAtom';
 
 function LogInPage() {
   const defaultState = {
@@ -10,6 +14,7 @@ function LogInPage() {
     errorMessage: '',
   };
   const [state, setState] = useState(defaultState);
+  const setRecoilUser = useSetRecoilState(userAtom);
   const navigate = useNavigate();
 
   function handleEmail(event) {
@@ -18,11 +23,22 @@ function LogInPage() {
   function handlePassword(event) {
     setState((s) => ({ ...s, password: event.target.value }));
   }
-  function handleSubmit(event) {
-    alert('Email: ' + state.email);
+  async function handleSubmit(event) {
     event.preventDefault();
-
-    setState(defaultState);
+    setState((s) => ({ ...s, errorMessage: '' }));
+    const { email, password } = state;
+    try {
+      if (email === '' || password === '')
+        throw new Error('Please fill in all the fields');
+      const userControllerClass = new userController();
+      const newUser = await userControllerClass.LogIn(email, password);
+      useLocalStorage.set('user', newUser);
+      setRecoilUser(newUser);
+      setState(defaultState);
+      navigate('/', { replace: true });
+    } catch (e) {
+      setState((s) => ({ ...s, errorMessage: e.message }));
+    }
   }
   function handleSingIn() {
     setState(defaultState);
@@ -64,6 +80,7 @@ function LogInPage() {
                 </button>
               }
             />
+            {state.errorMessage && <h6>{state.errorMessage}</h6>}
           </ul>
           <button type="submit" className="site-btn" onClick={handleSubmit}>
             Log In

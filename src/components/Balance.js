@@ -1,14 +1,15 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '../recoil/userAtom';
 import WalletIcon from './icons/wallet/WalletIcon';
 
 function Balance() {
+  const recoilUser = useRecoilValue(userAtom);
   return (
-    <div className="col-lg-3 col-md-3">
-      <div className="header__nav__option">
-        <WalletIcon />
-        <div className="price">$0.00</div>
-      </div>
-    </div>
+    <>
+      <WalletIcon />
+      <div className="price">{`$${recoilUser.balance}.00`}</div>
+    </>
   );
 }
 

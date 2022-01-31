@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import Balance from '../components/Balance';
 import LogoIcon from '../components/icons/logo/LogoIcon';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { userAtom } from '../recoil/userAtom';
+import LogOut from './LogOut';
 import MenuLinks from './MenuLinks';
 
 function TopBar() {
+  const [recoilUser, setRecoilUser] = useRecoilState(userAtom);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (recoilUser.id === '') {
+      try {
+        const auth = useLocalStorage.get('user');
+        if (auth) {
+          setRecoilUser(auth);
+        }
+      } catch {
+        navigate('/login', { replace: true });
+      }
+    } else navigate('/', { replace: true });
+  }, [recoilUser.id]);
   return (
     <header className="header">
       <div className="container">
@@ -13,8 +32,17 @@ function TopBar() {
               <LogoIcon />
             </div>
           </div>
-          <MenuLinks />
-          <Balance />
+          {recoilUser.email && (
+            <>
+              <MenuLinks />
+              <div className="col-lg-3 col-md-3">
+                <div className="header__nav__option">
+                  <Balance />
+                  <LogOut />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </header>

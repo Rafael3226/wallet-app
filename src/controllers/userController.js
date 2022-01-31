@@ -26,10 +26,10 @@ export default class userFirestore {
   async LogIn(email, password) {
     const q = query(this.collection, where('email', '==', email));
     const users = await getDocs(q);
-    if (users.length === 0) throw new Error('The email does not exists');
-    console.log(users);
-    if (users[0].password !== password)
+    if (users.size === 0) throw new Error('The email does not exists');
+    const userData = users.docs[0].data();
+    if (userData.password !== password)
       throw new Error('The password does not match');
-    return true;
+    return userData;
   }
 }

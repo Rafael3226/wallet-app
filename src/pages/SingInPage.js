@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import Input from '../components/forms/Input';
 import userController from '../controllers/userController';
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -16,17 +16,7 @@ function SingInPage() {
   };
   const [state, setState] = useState(defaultState);
   const navigate = useNavigate();
-  const [recoilUser, setRecoilUser] = useRecoilState(userAtom);
-  useEffect(() => {
-    if (recoilUser.id === '') {
-      try {
-        const auth = useLocalStorage.get('user');
-        if (auth) {
-          setRecoilUser(auth);
-        }
-      } catch {}
-    } else navigate('/', { replace: true });
-  }, [recoilUser, navigate, setRecoilUser]);
+  const setRecoilUser = useSetRecoilState(userAtom);
   function handleName(event) {
     setState((s) => ({ ...s, name: event.target.value }));
   }
