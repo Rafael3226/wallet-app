@@ -41,20 +41,24 @@ export default class userController {
   }
   async SendMoney(senderId, reciverId, amount) {
     reciverId = reciverId.trim();
-    // substract sender balance
+    // sender Data
     const docSender = await getDoc(
       doc(firestore, this.collectionName, senderId)
     );
     const senderNewBalance = Number(docSender.data().balance) - Number(amount);
+    if (senderNewBalance < 0) throw new Error('insufficient balance');
+    // reciver data
+    const docReciver = await getDoc(
+      doc(firestore, this.collectionName, reciverId)
+    );
+    const reciverData = docReciver.data();
+    if (!reciverData) throw new Error('Reciver not found');
+    // substract sender balance
     await updateDoc(doc(firestore, this.collectionName, senderId), {
       balance: senderNewBalance,
     });
     // Add Reciver Balance
-    const docReciver = await getDoc(
-      doc(firestore, this.collectionName, reciverId)
-    );
-    const reciverNewBalance =
-      Number(docReciver.data().balance) + Number(amount);
+    const reciverNewBalance = Number(reciverData.balance) + Number(amount);
     await updateDoc(doc(firestore, this.collectionName, reciverId), {
       balance: reciverNewBalance,
     });
