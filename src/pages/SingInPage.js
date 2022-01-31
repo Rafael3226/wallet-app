@@ -12,6 +12,7 @@ function SingInPage() {
     email: '',
     password: '',
     showPassword: false,
+    errorMessage: '',
   };
   const [state, setState] = useState(defaultState);
   const navigate = useNavigate();
@@ -43,12 +44,16 @@ function SingInPage() {
       password: state.password,
       balance: 0,
     };
-    const userControllerClass = new userController();
-    newUser = await userControllerClass.Save(newUser);
-    useLocalStorage.set('user', newUser);
-    setRecoilUser(newUser);
-    setState(defaultState);
-    navigate('/', { replace: true });
+    try {
+      const userControllerClass = new userController();
+      newUser = await userControllerClass.SingIn(newUser);
+      useLocalStorage.set('user', newUser);
+      setRecoilUser(newUser);
+      setState(defaultState);
+      navigate('/', { replace: true });
+    } catch (e) {
+      setState((s) => ({ ...s, errorMessage: e.message }));
+    }
   }
   function toggleShowPassword() {
     setState((s) => ({ ...s, showPassword: !s.showPassword }));
@@ -92,6 +97,7 @@ function SingInPage() {
                 </button>
               }
             />
+            {state.errorMessage && <h6>{state.errorMessage}</h6>}
           </ul>
 
           <button type="submit" className="site-btn" onClick={handleSubmit}>
