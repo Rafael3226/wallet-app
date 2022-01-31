@@ -15,6 +15,7 @@ function RequireAuth({ children }) {
         }
       } catch {}
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recoilUser.id]);
 
   if (recoilUser.id === '') {

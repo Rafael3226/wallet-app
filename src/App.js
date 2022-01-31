@@ -9,11 +9,9 @@ import SingInPage from './pages/SingInPage';
 import LogInPage from './pages/LogInPage';
 import RequireAuth from './containers/RequireAuth';
 import { RecoilRoot } from 'recoil';
-import firebase from './firebase';
 import SendMoney from './pages/SendMoney';
 
 function App() {
-  const config = firebase;
   return (
     <RecoilRoot>
       <BrowserRouter>
